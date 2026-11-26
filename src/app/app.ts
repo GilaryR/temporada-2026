@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
+// COMPONENTE PRINCIPAL (App): es el que se dibuja dentro de <app-root> en index.html.
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('temporada-2026');
-}
+export class App {}
