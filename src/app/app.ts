@@ -1,5 +1,10 @@
 // COMPONENTE PRINCIPAL (App): es el que se dibuja dentro de <app-root> en index.html.
+<<<<<<< HEAD
 // Muestra la página de la ruta actual y el banner de cookies.
+=======
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+>>>>>>> develop
 
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -14,7 +19,11 @@ import { CookiesService } from './servicios/cookies.service';
   imports: [RouterOutlet],
   templateUrl: './app.html',
 })
+<<<<<<< HEAD
 export class App {
   // inject() trae el servicio de cookies para usarlo en el HTML (banner).
   cookies = inject(CookiesService);
 }
+=======
+export class App {}
+>>>>>>> develop
