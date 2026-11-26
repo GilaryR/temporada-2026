@@ -1,0 +1,81 @@
+<!--
+  PORTADA DIVIDIDA EN DIAGONAL
+  - [class.moto-activo] agrega la clase cuando el mouse está en el lado de MotoGP.
+  - [class.f1-activo] lo mismo para Fórmula 1.
+  Esas clases mueven la diagonal en el CSS (styles.css, sección 7).
+  - (mouseleave): cuando el mouse sale de la portada, vuelve todo a la mitad.
+-->
+<main
+  class="portada"
+  [class.moto-activo]="ladoActivo() === 'motogp'"
+  [class.f1-activo]="ladoActivo() === 'f1'"
+  (mouseleave)="ladoActivo.set('')"
+>
+  <!-- Título principal oculto a la vista, pero lo leen los lectores de pantalla (accesibilidad) -->
+  <h1 class="oculto">Temporada 2026 de MotoGP y Fórmula 1</h1>
+
+  <!-- Barra de arriba -->
+  <div class="portada-barra">
+    <!-- Si hay cookie de campeonato preferido, muestra "Continuar en..." -->
+    @if (serieGuardada) {
+      <a routerLink="/resumen" [queryParams]="{ serie: serieGuardada }">
+        Continuar en <strong class="rojo">{{ serieGuardada === 'f1' ? 'Formula 1' : 'Moto GP' }}</strong> →
+      </a>
+    } @else {
+      <span></span>
+    }
+
+    <!-- Si hay sesión muestra el saludo; si no, los enlaces de login y registro -->
+    <div class="portada-cuenta">
+      @if (auth.usuario(); as usuario) {
+        <span>Hola, {{ usuario.nombre }}</span>
+        <button (click)="auth.cerrarSesion()">Cerrar sesión</button>
+      } @else {
+        <a routerLink="/login">Iniciar sesión</a>
+        <a routerLink="/registro" class="borde-rojo">Registrarse</a>
+      }
+    </div>
+  </div>
+
+  <!-- LADO IZQUIERDO: MotoGP -->
+  <!-- (mouseenter): al entrar el mouse, este lado queda activo. (click): lo mismo al tocar en el celular -->
+  <section class="lado lado-moto" [class.activo]="ladoActivo() === 'motogp'" (mouseenter)="ladoActivo.set('motogp')" (click)="ladoActivo.set('motogp')">
+    <!-- La foto se pone como fondo en el CSS. role="img" y aria-label la describen para accesibilidad -->
+    <div class="foto" role="img" aria-label="Piloto de MotoGP en una curva de noche"></div>
+    <div class="contenido">
+      <p class="temporada">Temporada 2026</p>
+      <h2 class="titulo">Moto GP</h2>
+      <p class="lema">Dos ruedas, cero margen de error</p>
+      <!-- Íconos del menú. Cada enlace lleva ?serie=motogp y guarda la cookie del campeonato -->
+      <nav class="iconos" aria-label="Secciones de MotoGP">
+        @for (opcion of menu; track opcion.ruta) {
+          <a [routerLink]="opcion.ruta" [queryParams]="{ serie: 'motogp' }" (click)="cookies.guardarSerie('motogp')">
+            <img [src]="opcion.icono" alt="" />
+            {{ opcion.texto }}
+          </a>
+        }
+      </nav>
+    </div>
+  </section>
+
+  <!-- LADO DERECHO: Fórmula 1 (igual que el izquierdo, pero con ?serie=f1) -->
+  <section class="lado lado-f1" [class.activo]="ladoActivo() === 'f1'" (mouseenter)="ladoActivo.set('f1')" (click)="ladoActivo.set('f1')">
+    <div class="foto" role="img" aria-label="Auto de Fórmula 1 en pista mojada de noche"></div>
+    <div class="contenido">
+      <p class="temporada">Temporada 2026</p>
+      <h2 class="titulo">Formula 1</h2>
+      <p class="lema">La cima de la ingeniería en movimiento</p>
+      <nav class="iconos" aria-label="Secciones de Fórmula 1">
+        @for (opcion of menu; track opcion.ruta) {
+          <a [routerLink]="opcion.ruta" [queryParams]="{ serie: 'f1' }" (click)="cookies.guardarSerie('f1')">
+            <img [src]="opcion.icono" alt="" />
+            {{ opcion.texto }}
+          </a>
+        }
+      </nav>
+    </div>
+  </section>
+
+  <!-- La franja roja diagonal del mockup -->
+  <div class="franja-roja"></div>
+</main>
