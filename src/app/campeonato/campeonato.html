@@ -1,0 +1,39 @@
+<app-navbar [serie]="serie()" />
+
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <p class="rojo">Temporada 2026 · {{ datos().nombre }}</p>
+  <h1 class="titulo-brillo">Campeonato</h1>
+  <p>Así va la pelea por el título de pilotos.</p>
+</header>
+
+<main class="contenedor">
+  <h2>Tabla de posiciones</h2>
+
+  <!-- Tabla HTML normal: thead = encabezados, tbody = filas -->
+  <table class="tabla-posiciones">
+    <thead>
+      <tr>
+        <th>Pos.</th>
+        <th>Piloto</th>
+        <th>Equipo</th>
+        <th>Puntos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- @for crea una fila <tr> por cada piloto. $index es la posición en la lista (empieza en 0) -->
+      @for (fila of datos().posiciones; track fila.piloto; let i = $index) {
+        <!-- [class.podio] resalta a los 3 primeros (i = 0, 1 y 2) -->
+        <tr [class.podio]="i < 3">
+          <td class="rojo">{{ i + 1 }}</td>
+          <td><strong>{{ fila.piloto }}</strong></td>
+          <td class="texto-suave">{{ fila.equipo }}</td>
+          <td>{{ fila.puntos }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <p class="texto-suave">Posiciones oficiales al 23 de noviembre de 2026. Campeón 2025: {{ datos().campeon }}.</p>
+</main>
+
+<app-footer />
