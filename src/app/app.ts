@@ -1,12 +1,20 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+// COMPONENTE PRINCIPAL (App): es el que se dibuja dentro de <app-root> en index.html.
+// Muestra la página de la ruta actual y el banner de cookies.
 
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CookiesService } from './servicios/cookies.service';
+
+// @Component convierte la clase en un componente de Angular:
+// - selector: el nombre de la etiqueta HTML (<app-root>)
+// - imports: lo que usa en su HTML (RouterOutlet = el espacio donde van las páginas)
+// - templateUrl: el archivo HTML de este componente
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('temporada-2026');
+  // inject() trae el servicio de cookies para usarlo en el HTML (banner).
+  cookies = inject(CookiesService);
 }
