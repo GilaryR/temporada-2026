@@ -1,1 +1,1480 @@
-/* You can add global styles to this file, and also import other style files */
+/* =====================================================================
+   #1. VARIABLES: COLORES Y FUENTES DEL MOCKUP
+   ---------------------------------------------------------------------
+   Aquí están los colores y fuentes de TODA la página.
+   Si cambias un valor aquí, cambia en todos los lugares que usan
+   var(--nombre). Es el PRIMER lugar donde mirar si piden otro color.
+   ===================================================================== */
+:root {
+  --negro: #070708;        /* Fondo general de la página */
+  --gris: #141416;         /* Fondo oscuro de tarjetas, carreras y tabla */
+  --gris-claro: #1d1d1f;   /* Gris un poco más claro (degradado de tarjetas, fondos de íconos) */
+  --borde: #2c2c30;        /* Color de los bordes finos (tarjetas, botones, inputs) */
+  --rojo: #9e0b10;         /* Rojo oscuro principal (botones rojos, franjas, línea del navbar) */
+  --rojo-claro: #d3141b;   /* Rojo brillante (hover, textos rojos, enlace activo) */
+  --blanco: #f5f5f5;       /* Color del texto normal */
+  --texto-suave: #a8a8ad;  /* Gris para textos secundarios y enlaces del menú */
+  --verde: #3ec27a;        /* Verde de los mensajes de éxito */
+  --fuente-titulos: 'Alfa Slab One', Georgia, serif;   /* Fuente de títulos (h1, h2, h3, números) */
+  --fuente-texto: 'Tinos', 'Times New Roman', serif;   /* Fuente del texto normal */
+}
+
+
+/* =====================================================================
+   #2. BASE
+   ---------------------------------------------------------------------
+   Estilos generales que afectan a toda la página.
+   ===================================================================== */
+
+/* Hace que el padding y el borde se cuenten DENTRO del ancho.
+   (No tocar: evita que las cajas se salgan de su tamaño.) */
+* {
+  box-sizing: border-box;
+}
+
+/* Cuerpo de la página: fondo, color y tamaño de letra general */
+body {
+  margin: 0;                          /* Quita el margen blanco que trae el navegador */
+  background: var(--negro);           /* COLOR DE FONDO de toda la página */
+  color: var(--blanco);               /* COLOR DEL TEXTO general */
+  font-family: var(--fuente-texto);   /* FUENTE del texto general */
+  font-size: 17px;                    /* TAMAÑO DE LETRA general */
+  line-height: 1.5;                   /* Espacio entre líneas (1.5 = 1,5 veces la letra) */
+  overflow-x: hidden;                 /* Evita la barra de scroll horizontal */
+}
+
+/* Todos los títulos usan la fuente de títulos */
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-titulos); /* FUENTE de los títulos */
+  font-weight: normal;                /* Sin negrita extra (la fuente ya es gruesa) */
+  margin: 0 0 10px;                   /* Espacio debajo del título: 10px */
+}
+
+/* Los enlaces toman el color del texto que los rodea (no azul) */
+a {
+  color: inherit;
+}
+
+/* Botones y campos usan la misma fuente que la página */
+button,
+input,
+select {
+  font: inherit;
+}
+
+
+/* =====================================================================
+   #3. CLASES QUE SE USAN EN VARIAS PÁGINAS
+   ===================================================================== */
+
+/* .contenedor = caja centrada que contiene el contenido de cada página */
+.contenedor {
+  width: min(100% - 32px, 1150px);  /* ANCHO MÁXIMO del contenido: 1150px (deja 16px a cada lado en pantallas chicas) */
+  margin: 30px auto;                /* 30px arriba/abajo, "auto" = centrado */
+}
+
+/* Los h2 (subtítulos) dentro del contenedor */
+.contenedor > h2 {
+  margin-top: 36px;   /* Espacio arriba del subtítulo */
+  font-size: 28px;    /* TAMAÑO de los subtítulos de sección */
+}
+
+/* .rojo = texto rojo con fuente de títulos (ej: "MOTOGP" pequeño en la marca) */
+.rojo {
+  color: var(--rojo-claro);           /* COLOR */
+  font-family: var(--fuente-titulos);
+}
+
+/* .texto-suave = texto en gris (descripciones, datos secundarios) */
+.texto-suave {
+  color: var(--texto-suave);
+}
+
+/* .centrado = centra el texto */
+.centrado {
+  text-align: center;
+}
+
+/* .oculto = oculta algo de la vista pero los lectores de pantalla lo leen
+   (accesibilidad). No tocar. */
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Título blanco con borde rojo y brillo, igual al mockup.
+   -webkit-text-stroke = borde de las letras. text-shadow = brillo blanco alrededor. */
+.titulo-brillo {
+  color: #fff;                                    /* COLOR de las letras */
+  -webkit-text-stroke: 1px #7a0b10;               /* GROSOR y COLOR del borde de las letras */
+  paint-order: stroke fill;                       /* Dibuja el borde detrás del relleno (se ve más limpio) */
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.5); /* BRILLO: 14px = tamaño, 0.5 = intensidad */
+}
+
+/* .tarjeta = caja gris con borde y sombra (se usa en muchas páginas) */
+.tarjeta {
+  background: linear-gradient(160deg, var(--gris-claro), var(--gris)); /* FONDO: degradado de gris claro a gris */
+  border: 1px solid var(--borde);             /* BORDE: grosor 1px y color */
+  border-radius: 10px;                        /* REDONDEO de las esquinas */
+  padding: 20px;                              /* ESPACIO INTERNO */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);/* SOMBRA debajo de la tarjeta */
+}
+
+/* .cuadricula = grid automático de tarjetas (equipos, glosario...) */
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Cada tarjeta mide MÍNIMO 260px; caben las que entren por fila */
+  gap: 16px;                                                    /* ESPACIO entre tarjetas */
+}
+
+/* .dos-columnas = dos columnas lado a lado (la izquierda un poco más ancha) */
+.dos-columnas {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;   /* PROPORCIÓN: izquierda 1.3, derecha 1 */
+  gap: 24px;                          /* ESPACIO entre columnas */
+  align-items: start;                 /* Alinea las columnas arriba */
+}
+
+/* .boton = botón base (transparente con borde) */
+.boton {
+  display: inline-block;
+  padding: 10px 18px;                 /* TAMAÑO del botón: 10px arriba/abajo, 18px a los lados */
+  border: 1px solid var(--borde);     /* BORDE del botón */
+  border-radius: 6px;                 /* REDONDEO de esquinas */
+  background: transparent;            /* FONDO (transparente) */
+  color: var(--blanco);               /* COLOR del texto */
+  text-align: center;
+  text-decoration: none;              /* Quita el subrayado si es un enlace */
+  cursor: pointer;                    /* Manito al pasar el mouse */
+  transition: 0.3s;                   /* VELOCIDAD de la animación al pasar el mouse */
+}
+
+/* Botón base cuando el mouse está encima */
+.boton:hover {
+  border-color: var(--rojo-claro);    /* COLOR del borde al pasar el mouse */
+}
+
+/* .boton-rojo = botón relleno de rojo (botones principales) */
+.boton-rojo {
+  background: var(--rojo);            /* COLOR DE FONDO */
+  border-color: var(--rojo);          /* COLOR DEL BORDE */
+}
+
+/* Botón rojo cuando el mouse está encima */
+.boton-rojo:hover {
+  background: var(--rojo-claro);                  /* COLOR DE FONDO al pasar el mouse */
+  box-shadow: 0 0 18px rgba(211, 20, 27, 0.5);    /* BRILLO rojo alrededor */
+}
+
+/* Botón desactivado (no se puede hacer clic) */
+.boton:disabled {
+  opacity: 0.4;                       /* TRANSPARENCIA (0 = invisible, 1 = normal) */
+  cursor: not-allowed;                /* Cursor de prohibido */
+}
+
+/* .ancho-completo = el elemento ocupa todo el ancho disponible */
+.ancho-completo {
+  width: 100%;
+}
+
+/* ---------- Botones redondos de filtro (píldoras) ---------- */
+
+/* Fila que contiene las píldoras */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;                    /* Si no caben, bajan a otra línea */
+  gap: 8px;                           /* ESPACIO entre píldoras */
+  margin-bottom: 16px;                /* Espacio debajo de la fila */
+}
+
+/* Cada píldora (botón de filtro) */
+.pildora {
+  padding: 6px 14px;                  /* TAMAÑO de la píldora */
+  border: 1px solid var(--borde);     /* BORDE */
+  border-radius: 20px;                /* Bien redondeado = forma de píldora */
+  background: transparent;            /* FONDO */
+  color: var(--texto-suave);          /* COLOR del texto */
+  cursor: pointer;
+}
+
+/* Píldora seleccionada (filtro activo) */
+.pildora.activa {
+  background: var(--rojo);            /* COLOR DE FONDO del filtro activo */
+  border-color: var(--rojo);
+  color: #fff;                        /* COLOR del texto del filtro activo */
+}
+
+/* ---------- Mensajes ---------- */
+
+/* .alerta = caja de aviso con borde rojo */
+.alerta {
+  padding: 10px 14px;                     /* ESPACIO INTERNO */
+  border: 1px solid var(--rojo-claro);    /* BORDE rojo */
+  border-radius: 6px;
+  background: rgba(211, 20, 27, 0.12);    /* FONDO rojo muy transparente (0.12) */
+}
+
+/* .exito-caja = se suma a .alerta para volverla verde (mensaje de éxito) */
+.exito-caja {
+  border-color: var(--verde);             /* BORDE verde */
+  background: rgba(62, 194, 122, 0.12);   /* FONDO verde transparente */
+}
+
+/* .error = texto rojo pequeño debajo de un campo del formulario */
+.error {
+  color: #ff6b70;                     /* COLOR del mensaje de error */
+  font-size: 14px;                    /* TAMAÑO */
+  margin: 4px 0 0;                    /* Espacio arriba: 4px */
+}
+
+/* .exito = texto verde */
+.exito {
+  color: var(--verde);
+}
+
+
+/* =====================================================================
+   #4. NAVBAR (MENÚ DE ARRIBA EN LAS PÁGINAS INTERNAS)
+   ===================================================================== */
+
+/* Barra completa del menú */
+.navbar {
+  position: sticky;                   /* Se queda pegada arriba al hacer scroll */
+  top: 0;
+  z-index: 10;                        /* Queda por encima del contenido */
+  display: flex;
+  align-items: center;
+  gap: 20px;                          /* ESPACIO entre logo, menú, etc. */
+  padding: 10px 24px;                 /* ALTO de la barra (10px) y margen lateral (24px) */
+  background: rgba(7, 7, 8, 0.95);    /* COLOR DE FONDO (negro casi opaco, 0.95) */
+  border-bottom: 2px solid var(--rojo); /* LÍNEA ROJA debajo: grosor 2px */
+}
+
+/* Logo / nombre de la página (a la izquierda) */
+.marca {
+  display: flex;
+  flex-direction: column;             /* Texto en dos líneas (una debajo de otra) */
+  text-decoration: none;
+  font-family: var(--fuente-titulos);
+  font-size: 22px;                    /* TAMAÑO del nombre principal */
+  line-height: 1.1;
+}
+
+/* Texto rojo pequeño dentro del logo */
+.marca .rojo {
+  font-size: 12px;                    /* TAMAÑO del texto rojo pequeño */
+}
+
+/* Contenedor de los enlaces del menú */
+.menu {
+  flex: 1;                            /* Ocupa todo el espacio sobrante */
+  display: flex;
+  align-items: center;
+  gap: 12px;                          /* ESPACIO entre enlaces */
+}
+
+/* Cada enlace del menú (los que NO son botones) */
+.menu > a:not(.boton) {
+  display: flex;
+  align-items: center;
+  gap: 6px;                           /* Espacio entre ícono y texto */
+  padding: 8px 4px;
+  color: var(--texto-suave);          /* COLOR de los enlaces */
+  text-decoration: none;
+  border-bottom: 2px solid transparent; /* Línea invisible (se vuelve roja si está activo) */
+}
+
+/* Enlace del menú al pasar el mouse */
+.menu > a:not(.boton):hover {
+  color: #fff;                        /* COLOR al pasar el mouse */
+}
+
+/* Íconos pequeños dentro del menú */
+.menu img {
+  width: 28px;                        /* TAMAÑO del ícono */
+  padding: 4px;
+  border-radius: 5px;
+  background: var(--gris-claro);      /* FONDO detrás del ícono */
+}
+
+/* Enlace de la página actual (clase puesta por routerLinkActive) */
+.menu a.activo {
+  color: #fff !important;                         /* COLOR del enlace activo */
+  border-bottom-color: var(--rojo-claro) !important; /* LÍNEA ROJA debajo del enlace activo */
+}
+
+/* Ícono del enlace activo */
+.menu a.activo img {
+  background: var(--rojo);            /* FONDO rojo detrás del ícono activo */
+}
+
+/* Selector MotoGP | F1 (botones juntos con forma de píldora) */
+.selector {
+  margin-left: auto;                  /* Lo empuja a la derecha */
+  display: flex;
+  border: 1px solid var(--borde);     /* BORDE */
+  border-radius: 20px;                /* Forma de píldora */
+  overflow: hidden;
+}
+
+/* Cada opción del selector */
+.selector a {
+  padding: 6px 14px;                  /* TAMAÑO de cada opción */
+  text-decoration: none;
+  color: var(--texto-suave);          /* COLOR de la opción no seleccionada */
+}
+
+/* Opción seleccionada del selector */
+.selector a.activa {
+  background: var(--rojo);            /* FONDO de la opción seleccionada */
+  color: #fff;
+}
+
+/* Botón hamburguesa (☰). Está oculto en computador;
+   aparece en tableta/celular (ver #15). */
+.hamburguesa {
+  display: none;                      /* Oculto en pantallas grandes */
+  margin-left: auto;
+  width: 44px;                        /* TAMAÑO del botón */
+  height: 44px;
+  font-size: 20px;                    /* TAMAÑO del ícono ☰ */
+  background: var(--gris-claro);      /* FONDO */
+  color: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+
+/* =====================================================================
+   #5. FOOTER (PIE DE PÁGINA)
+   ===================================================================== */
+
+/* Caja completa del footer */
+.footer {
+  margin-top: 50px;                   /* Espacio entre el contenido y el footer */
+  padding: 30px 24px 10px;            /* Espacio interno: arriba 30, lados 24, abajo 10 */
+  background: #050506;                /* COLOR DE FONDO del footer */
+  border-top: 2px solid var(--rojo);  /* LÍNEA ROJA arriba del footer */
+}
+
+/* Columnas del footer (se acomodan solas según el ancho) */
+.footer-columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Cada columna mínimo 220px */
+  gap: 24px;                          /* ESPACIO entre columnas */
+  max-width: 1150px;                  /* ANCHO MÁXIMO (igual al contenedor) */
+  margin: 0 auto;                     /* Centrado */
+}
+
+/* Nombre de la página en el footer */
+.footer-titulo {
+  font-size: 22px;                    /* TAMAÑO */
+  margin: 0;
+}
+
+/* Títulos de cada columna del footer */
+.footer h2 {
+  font-size: 16px;                    /* TAMAÑO */
+}
+
+/* Lista de enlaces del footer (uno debajo del otro) */
+.footer nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;                           /* Espacio entre enlaces */
+}
+
+/* Enlaces del footer */
+.footer nav a {
+  color: var(--texto-suave);          /* COLOR */
+  text-decoration: none;
+}
+
+/* Enlaces del footer al pasar el mouse */
+.footer nav a:hover {
+  color: #fff;
+}
+
+/* Línea final con derechos / texto legal */
+.footer-legal {
+  max-width: 1150px;
+  margin: 20px auto 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde); /* Línea gris de separación */
+  font-size: 14px;                    /* TAMAÑO del texto legal */
+}
+
+
+/* =====================================================================
+   #6. BANNER DE COOKIES (aviso flotante abajo)
+   ===================================================================== */
+
+/* Caja del aviso */
+.banner-cookies {
+  position: fixed;                    /* Fijo en pantalla aunque hagas scroll */
+  z-index: 20;                        /* Encima de todo (incluso del navbar) */
+  bottom: 16px;                       /* DISTANCIA desde abajo */
+  left: 50%;                          /* Estas dos líneas lo centran horizontalmente */
+  transform: translateX(-50%);
+  width: min(100% - 24px, 900px);     /* ANCHO MÁXIMO: 900px */
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;                 /* Espacio interno */
+  background: rgba(14, 14, 16, 0.97); /* COLOR DE FONDO */
+  border: 1px solid var(--borde);
+  border-top: 3px solid var(--rojo);  /* LÍNEA ROJA arriba: 3px */
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6); /* SOMBRA */
+}
+
+/* Título del aviso */
+.banner-cookies h2 {
+  font-size: 18px;                    /* TAMAÑO */
+  margin: 0;
+}
+
+/* Texto del aviso */
+.banner-cookies p {
+  margin: 4px 0 0;
+  font-size: 15px;                    /* TAMAÑO */
+}
+
+/* Botones Aceptar / Rechazar */
+.banner-botones {
+  display: flex;
+  gap: 10px;                          /* Espacio entre botones */
+  flex-shrink: 0;                     /* Los botones no se encogen */
+}
+
+
+/* =====================================================================
+   #7. PORTADA (INICIO) - DIAGONAL MOTOGP / F1
+   ===================================================================== */
+
+/*
+  CÓMO FUNCIONA LA DIAGONAL:
+  - --x es una variable CSS con la posición de la diagonal (50% = la mitad de la pantalla).
+  - Cuando el mouse está sobre MotoGP, Angular pone la clase .moto-activo y --x pasa a 60%
+    (la diagonal se corre a la derecha y MotoGP se ve más grande). Con F1 pasa a 40%.
+  - @property registra la variable como porcentaje, para que "transition" la pueda animar suave.
+*/
+@property --x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+/* Contenedor de toda la portada */
+.portada {
+  --x: 50%;                   /* POSICIÓN INICIAL de la diagonal (50% = mitad) */
+  position: relative;
+  height: 100vh;              /* ALTO: toda la pantalla */
+  min-height: 560px;          /* ALTO MÍNIMO para pantallas bajitas */
+  overflow: hidden;
+  background: #000;
+  transition: --x 0.7s;       /* VELOCIDAD con que se mueve la diagonal (0.7 segundos) */
+}
+
+/* Mouse sobre MotoGP: la diagonal se corre a la derecha */
+.portada.moto-activo {
+  --x: 60%;                   /* CUÁNTO SE MUEVE hacia la derecha */
+}
+
+/* Mouse sobre F1: la diagonal se corre a la izquierda */
+.portada.f1-activo {
+  --x: 40%;                   /* CUÁNTO SE MUEVE hacia la izquierda */
+}
+
+/* Barra de arriba de la portada (logo, iniciar sesión, etc.) */
+.portada-barra {
+  position: absolute;         /* Flota encima de las fotos */
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between; /* Logo a la izquierda, cuenta a la derecha */
+  align-items: center;
+  padding: 16px 24px;         /* Espacio interno */
+}
+
+/* Enlaces y botones de la barra de la portada */
+.portada-barra a,
+.portada-barra button {
+  color: #fff;                /* COLOR */
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Grupo de la derecha (iniciar sesión / registrarse) */
+.portada-cuenta {
+  display: flex;
+  align-items: center;
+  gap: 16px;                  /* Espacio entre enlaces */
+}
+
+/* Enlace con borde rojo (ej: "Registrarse") */
+.borde-rojo {
+  padding: 4px 12px;
+  border: 1px solid var(--rojo) !important;  /* COLOR del borde */
+  border-radius: 6px;
+}
+
+/* Cada mitad de la portada (MotoGP y F1). Las dos ocupan toda la
+   pantalla, pero clip-path recorta cada una a su lado. */
+.lado {
+  position: absolute;
+  inset: 0;                   /* Ocupa todo el espacio */
+  cursor: pointer;
+}
+
+/*
+  clip-path recorta cada lado con forma de polígono (como unas tijeras).
+  Los 4 puntos del polígono de MotoGP: arriba-izquierda, arriba (un poco a la derecha de --x),
+  abajo (un poco a la izquierda de --x) y abajo-izquierda. Eso forma el corte inclinado.
+  14vh es cuánto se inclina la diagonal.
+  >> Para CAMBIAR LA INCLINACIÓN: cambia los 4 "14vh" (en .lado-moto y .lado-f1)
+     y ajusta el skewX de .franja-roja para que la franja coincida.
+*/
+.lado-moto {
+  clip-path: polygon(0 0, calc(var(--x) + 14vh) 0, calc(var(--x) - 14vh) 100%, 0 100%);
+}
+
+.lado-f1 {
+  clip-path: polygon(calc(var(--x) + 14vh) 0, 100% 0, 100% 100%, calc(var(--x) - 14vh) 100%);
+}
+
+/* Foto de fondo de cada lado (la imagen se pone más abajo) */
+.foto {
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  background-repeat: no-repeat;
+  /* Ancho de la foto: lo que sea mayor entre 110% del alto o 70% del ancho de la pantalla.
+     Así la foto no se estira de más y siempre cubre su lado. */
+  background-size: max(110vh, 70vw) auto;   /* TAMAÑO DE LA FOTO */
+  filter: brightness(0.8);                  /* BRILLO normal de la foto (1 = original, menos = más oscura) */
+  transition: 0.7s;                         /* VELOCIDAD del zoom/brillo */
+}
+
+/* La moto pegada a la izquierda y el F1 pegado a la derecha */
+.lado-moto .foto {
+  background-image: url('/img/motogp.jpg');  /* IMAGEN de MotoGP (cámbiala aquí) */
+  background-position: left top;             /* POSICIÓN de la foto */
+  transform-origin: left center;             /* El zoom crece desde la izquierda */
+}
+
+.lado-f1 .foto {
+  background-image: url('/img/f1.jpg');      /* IMAGEN de F1 (cámbiala aquí) */
+  background-position: right top;            /* POSICIÓN de la foto */
+  transform-origin: right center;            /* El zoom crece desde la derecha */
+}
+
+/* El lado con el mouse encima se acerca un poco y se ilumina; el otro se oscurece */
+.lado.activo .foto {
+  transform: scale(1.05);     /* ZOOM del lado activo (1.05 = 5% más grande) */
+  filter: brightness(1);      /* BRILLO del lado activo */
+}
+
+/* El lado que NO tiene el mouse se oscurece */
+.moto-activo .lado-f1 .foto,
+.f1-activo .lado-moto .foto {
+  filter: brightness(0.45);   /* BRILLO del lado inactivo (más bajo = más oscuro) */
+}
+
+/* Bloque de textos e íconos de cada lado */
+.contenido {
+  position: absolute;
+  top: 9%;                    /* DISTANCIA desde arriba */
+  width: 48vw;                /* ANCHO del bloque */
+  transform: translateX(-50%);/* Lo centra sobre el punto "left" */
+  text-align: center;
+}
+
+/* Posición horizontal del texto de MotoGP (en el centro de su lado) */
+.lado-moto .contenido {
+  left: calc(var(--x) / 2 - 2%);            /* El "- 2%" lo corre un poquito a la izquierda */
+}
+
+/* Posición horizontal del texto de F1 (en el centro de su lado) */
+.lado-f1 .contenido {
+  left: calc((var(--x) + 100%) / 2 + 1.5%); /* El "+ 1.5%" lo corre un poquito a la derecha */
+}
+
+/* Texto "TEMPORADA 2026" en rojo */
+.temporada {
+  font-family: var(--fuente-titulos);
+  color: var(--rojo);                     /* COLOR */
+  font-size: clamp(18px, 2.1vw, 28px);    /* TAMAÑO: mínimo 18px, máximo 28px */
+  margin: 0 0 6vh;                        /* Espacio debajo (separación con el título) */
+}
+
+/* Títulos grandes "MotoGP" y "Fórmula 1" */
+.titulo {
+  font-size: clamp(42px, 6.3vw, 84px);              /* TAMAÑO: mínimo 42px, máximo 84px */
+  margin: 0;
+  white-space: nowrap;                              /* No se parte en dos líneas */
+  color: #fff;                                      /* COLOR de las letras */
+  -webkit-text-stroke: 1.5px #7a0b10;               /* BORDE de las letras: grosor y color */
+  paint-order: stroke fill;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.25);  /* BRILLO suave (lado no activo) */
+}
+
+/* Título del lado activo: brilla más */
+.lado.activo .titulo {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.35); /* BRILLO fuerte */
+}
+
+/* Frase debajo del título (lema) */
+.lema {
+  margin-top: 3vh;                        /* Espacio arriba */
+  font-size: clamp(16px, 1.6vw, 21px);    /* TAMAÑO: mínimo 16px, máximo 21px */
+  color: #d0d0d4;                         /* COLOR */
+  text-shadow: 0 2px 8px #000, 0 0 3px #000; /* se lee bien aunque haya foto detrás */
+}
+
+/* Los íconos solo aparecen en el lado activo */
+.iconos {
+  display: flex;
+  justify-content: center;
+  gap: 2.4vw;                 /* ESPACIO entre íconos */
+  margin-top: 8vh;            /* Espacio arriba de los íconos */
+  opacity: 0;                 /* Invisibles al inicio */
+  transform: translateY(14px);/* Empiezan 14px más abajo (para que "suban" al aparecer) */
+  transition: 0.4s;           /* VELOCIDAD con que aparecen */
+}
+
+/* Íconos visibles en el lado activo */
+.lado.activo .iconos {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cada ícono con su texto debajo */
+.iconos a {
+  display: flex;
+  flex-direction: column;     /* Imagen arriba, texto abajo */
+  align-items: center;
+  gap: 8px;
+  color: #fff;                                /* COLOR del texto */
+  text-decoration: none;
+  font-size: clamp(15px, 1.4vw, 18px);        /* TAMAÑO del texto */
+}
+
+/* Imagen (cuadrito) de cada ícono */
+.iconos img {
+  width: clamp(62px, 6.7vw, 86px);            /* TAMAÑO del ícono: mínimo 62px, máximo 86px */
+  padding: 12px;
+  background: rgba(29, 29, 31, 0.92);         /* FONDO del cuadrito */
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+/* Ícono al pasar el mouse: sube y brilla rojo */
+.iconos a:hover img {
+  transform: translateY(-4px);                    /* Cuánto sube */
+  border-color: var(--rojo);                      /* COLOR del borde */
+  box-shadow: 0 0 20px rgba(211, 20, 27, 0.5);    /* BRILLO rojo */
+}
+
+/* Franja roja de la diagonal que separa MotoGP y F1 */
+.franja-roja {
+  position: absolute;
+  z-index: 3;
+  top: -2%;
+  bottom: -2%;
+  left: var(--x);                                 /* Sigue la posición de la diagonal */
+  width: 12px;                                    /* GROSOR de la franja */
+  background: var(--rojo);                        /* COLOR de la franja */
+  box-shadow: 0 0 20px rgba(158, 11, 16, 0.6);    /* BRILLO de la franja */
+  transform: translateX(-50%) skewX(-15.8deg);    /* INCLINACIÓN (debe coincidir con los 14vh) */
+  pointer-events: none;                           /* No bloquea los clics */
+}
+
+
+/* =====================================================================
+   #8. ENCABEZADO DE LAS PÁGINAS INTERNAS
+   ---------------------------------------------------------------------
+   Banner con foto de fondo y título grande arriba de cada página.
+   ===================================================================== */
+
+/* Encabezado de MotoGP (por defecto) */
+.encabezado {
+  position: relative;
+  overflow: hidden;
+  padding: 70px 24px 50px;    /* ALTO del encabezado: 70px arriba, 50px abajo */
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.3)), /* Sombra negra de izquierda a derecha */
+    url('/img/motogp.jpg') right 62% / 55% auto no-repeat,           /* FOTO: a la derecha, ancho 55% */
+    #000;                                                            /* Fondo negro de respaldo */
+}
+
+/* Encabezado de F1 (cambia solo la foto) */
+.encabezado-f1 {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.3)),
+    url('/img/f1.jpg') right 62% / 55% auto no-repeat,               /* FOTO de F1 */
+    #000;
+}
+
+/* Franja roja inclinada, como la del mockup */
+.encabezado::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  right: 16%;                 /* POSICIÓN de la franja (desde la derecha) */
+  width: 10px;                /* GROSOR */
+  background: var(--rojo);    /* COLOR */
+  transform: skewX(-16deg);   /* INCLINACIÓN */
+}
+
+/* Título grande del encabezado */
+.encabezado h1 {
+  font-size: clamp(38px, 7vw, 66px);  /* TAMAÑO: mínimo 38px, máximo 66px */
+}
+
+/* Descripción debajo del título */
+.encabezado p:last-child {
+  max-width: 60ch;            /* ANCHO máximo (≈60 letras por línea) */
+  font-size: 19px;            /* TAMAÑO */
+  color: #c4c4c8;             /* COLOR */
+}
+
+
+/* =====================================================================
+   #9. RESUMEN (página de inicio interna)
+   ===================================================================== */
+
+/* Fila de cifras (4 tarjetas con números) */
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 4 COLUMNAS iguales (en celular pasan a 2, ver #15) */
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cifras p {
+  margin: 0;
+}
+
+/* Número grande de cada cifra */
+.numero {
+  font-family: var(--fuente-titulos);
+  font-size: 44px;            /* TAMAÑO del número */
+  line-height: 1.1;
+}
+
+/* Parte pequeña al lado del número (ej: "/22") */
+.numero small {
+  font-size: 22px;            /* TAMAÑO */
+  color: var(--texto-suave);  /* COLOR */
+}
+
+/* Barra de progreso (fondo gris) */
+.barra {
+  height: 6px;                /* GROSOR de la barra */
+  margin-top: 10px;
+  border-radius: 6px;
+  background: var(--borde);   /* COLOR de la parte vacía */
+}
+
+/* Parte llena de la barra (el ancho se pone desde Angular) */
+.barra-relleno {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--rojo-claro); /* COLOR de la parte llena */
+}
+
+/* Títulos de las tarjetas en dos columnas */
+.dos-columnas .tarjeta h3 {
+  font-size: 26px;            /* TAMAÑO */
+}
+
+/* Tarjeta con línea roja a la izquierda */
+.borde-izquierdo {
+  border-left: 4px solid var(--rojo);  /* GROSOR y COLOR de la línea */
+}
+
+/* Cuadrícula de accesos rápidos */
+.accesos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Cada acceso mínimo 220px */
+  gap: 16px;
+}
+
+/* Cada acceso rápido (ícono + texto) */
+.accesos a {
+  display: flex;
+  align-items: center;
+  gap: 14px;                  /* Espacio entre ícono y texto */
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+/* Acceso al pasar el mouse: sube y borde rojo */
+.accesos a:hover {
+  border-color: var(--rojo);  /* COLOR del borde */
+  transform: translateY(-3px);/* Cuánto sube */
+}
+
+/* Ícono de cada acceso */
+.accesos img {
+  width: 54px;                /* TAMAÑO del ícono */
+  padding: 8px;
+  border-radius: 6px;
+  background: #000;           /* FONDO del ícono */
+}
+
+
+/* =====================================================================
+   #10. CARRERAS (calendario, mapa y carrera más cercana)
+   ===================================================================== */
+
+/* Caja de ubicación (se queda pegada al hacer scroll en computador) */
+.caja-ubicacion {
+  position: sticky;
+  top: 90px;                  /* Distancia desde arriba (deja espacio para el navbar) */
+}
+
+/* Mapa */
+.mapa {
+  width: 100%;
+  height: 250px;              /* ALTO del mapa */
+  margin-top: 14px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+/* Lista desplegable (select) dentro de una alerta */
+.alerta select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  background: #000;           /* FONDO */
+  color: #fff;                /* COLOR del texto */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+/* Cada carrera de la lista de "más cercanas" */
+.cercana {
+  display: flex;
+  justify-content: space-between; /* Nombre a la izquierda, distancia a la derecha */
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+/* La carrera más cercana (la primera) resaltada en rojo */
+.cercana.primera {
+  border-color: var(--rojo-claro);        /* COLOR del borde */
+  background: rgba(211, 20, 27, 0.1);     /* FONDO rojo transparente */
+}
+
+/* Cada fila del calendario de carreras */
+.carrera {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;              /* Espacio interno */
+  margin-bottom: 10px;        /* Separación entre carreras */
+  background: var(--gris);    /* FONDO */
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+/* Carrera que ya se corrió (se ve más apagada) */
+.carrera.corrida {
+  opacity: 0.55;              /* TRANSPARENCIA (más bajo = más apagada) */
+}
+
+/* Nombre de la carrera */
+.carrera h3 {
+  font-size: 17px;            /* TAMAÑO */
+  margin: 0;
+}
+
+.carrera p {
+  margin: 0;
+}
+
+/* Cuadrito con el número de ronda */
+.ronda {
+  min-width: 46px;            /* TAMAÑO del cuadrito */
+  height: 46px;
+  display: grid;
+  place-items: center;        /* Número centrado */
+  border-radius: 6px;
+  background: var(--gris-claro);      /* FONDO */
+  font-family: var(--fuente-titulos);
+  font-size: 20px;                    /* TAMAÑO del número */
+  color: var(--rojo-claro);           /* COLOR del número */
+}
+
+/* Fecha de la carrera (a la derecha) */
+.fecha {
+  margin-left: auto;          /* La empuja a la derecha */
+  text-align: right;
+  white-space: nowrap;        /* No se parte en dos líneas */
+}
+
+/* Etiqueta pequeña (ej: "Próxima", "Corrida") */
+.etiqueta {
+  font-size: 13px;            /* TAMAÑO */
+  padding: 1px 10px;
+  border: 1px solid var(--rojo); /* COLOR del borde */
+  border-radius: 20px;
+}
+
+
+/* =====================================================================
+   #11. EQUIPOS Y GLOSARIO
+   ===================================================================== */
+
+/* Tarjeta de equipo. El COLOR de la línea izquierda se pone
+   desde el HTML/Angular con el color de cada equipo. */
+.equipo {
+  border-left: 6px solid;     /* GROSOR de la línea de color del equipo */
+  transition: 0.3s;
+}
+
+/* Tarjeta de equipo al pasar el mouse */
+.equipo:hover {
+  transform: translateY(-4px);/* Cuánto sube */
+}
+
+/* Nombre de cada piloto dentro de la tarjeta del equipo */
+.piloto {
+  margin: 6px 0 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.45);  /* FONDO negro transparente */
+  font-weight: bold;
+}
+
+/* Buscador del glosario (etiqueta + campo) */
+.buscador {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 420px;           /* ANCHO MÁXIMO del buscador */
+}
+
+/* Campo de texto del buscador */
+.buscador input {
+  padding: 12px;              /* ALTO del campo */
+  background: #000;           /* FONDO */
+  color: #fff;                /* COLOR del texto */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+/* Tarjeta de cada término del glosario */
+.termino {
+  border-top: 3px solid var(--rojo); /* LÍNEA ROJA arriba: grosor y color */
+}
+
+
+/* =====================================================================
+   #12. CAMPEONATO (TABLA) Y FAVORITOS (ARRASTRAR)
+   ===================================================================== */
+
+/* Tabla de posiciones */
+.tabla-posiciones {
+  width: 100%;
+  max-width: 760px;           /* ANCHO MÁXIMO de la tabla */
+  border-collapse: collapse;  /* Une los bordes de las celdas */
+  background: var(--gris);    /* FONDO */
+}
+
+/* Encabezado de la tabla (Pos, Piloto, Puntos...) */
+.tabla-posiciones th {
+  padding: 10px 16px;                 /* Espacio interno */
+  background: var(--rojo);            /* COLOR DE FONDO del encabezado */
+  font-family: var(--fuente-titulos);
+  font-weight: normal;
+  text-align: left;
+}
+
+/* Celdas de la tabla */
+.tabla-posiciones td {
+  padding: 10px 16px;                 /* Espacio interno */
+  border-bottom: 1px solid var(--borde); /* Línea entre filas */
+}
+
+/* Filas del podio (1°, 2°, 3°) resaltadas */
+.tabla-posiciones tr.podio {
+  background: rgba(211, 20, 27, 0.1); /* FONDO rojo transparente */
+}
+
+/* Lista de favoritos que se ordena arrastrando */
+.favoritos {
+  max-width: 520px;           /* ANCHO MÁXIMO */
+  padding: 8px;
+  list-style: none;           /* Quita los puntos de la lista */
+  border: 2px dashed transparent; /* Borde punteado invisible (se ve al arrastrar) */
+  border-radius: 8px;
+}
+
+/* Cada elemento de favoritos */
+.favorito {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;         /* Espacio interno */
+  margin-bottom: 8px;         /* Separación entre favoritos */
+  background: var(--gris-claro); /* FONDO */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  cursor: grab;               /* Cursor de "mano para agarrar" */
+  user-select: none;          /* No se selecciona el texto al arrastrar */
+}
+
+/* Los 3 primeros favoritos con línea roja a la izquierda */
+.favorito.top3 {
+  border-left: 4px solid var(--rojo-claro); /* GROSOR y COLOR */
+}
+
+/* Nombre del favorito */
+.nombre-favorito {
+  flex: 1;                    /* Ocupa el espacio sobrante */
+  font-weight: bold;
+}
+
+/* Ícono de estrella */
+.estrella {
+  width: 24px;                /* TAMAÑO */
+}
+
+/* Clases que pone el CDK mientras se arrastra (retroalimentación visual) */
+
+/* La lista mientras se está arrastrando algo */
+.cdk-drop-list-dragging {
+  border-color: var(--rojo);              /* Aparece el borde punteado rojo */
+  background: rgba(211, 20, 27, 0.06);    /* FONDO rojo muy suave */
+}
+
+/* La copia que sigue al mouse mientras arrastras */
+.cdk-drag-preview {
+  border-color: var(--rojo-claro);
+  box-shadow: 0 0 24px rgba(211, 20, 27, 0.6); /* BRILLO rojo */
+}
+
+/* El hueco donde va a caer el elemento */
+.cdk-drag-placeholder {
+  opacity: 0.3;
+  border-style: dashed;
+}
+
+/* Animación suave al soltar y al reacomodarse */
+.cdk-drag-animating,
+.cdk-drop-list-dragging .favorito {
+  transition: transform 0.25s; /* VELOCIDAD de la animación */
+}
+
+
+/* =====================================================================
+   #13. LOGIN Y REGISTRO (FORMULARIOS)
+   ===================================================================== */
+
+/* Fondo de la página con las dos fotos y el formulario en el centro */
+.fondo-formulario {
+  position: relative;
+  min-height: 85vh;           /* ALTO MÍNIMO (85% de la pantalla) */
+  display: grid;
+  place-items: center;        /* Formulario centrado */
+  padding: 40px 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(7, 7, 8, 0.75), rgba(7, 7, 8, 0.9)),    /* Capa oscura encima (0.75 a 0.9) */
+    url('/img/motogp.jpg') left center / 55% auto no-repeat,     /* FOTO MotoGP a la izquierda */
+    url('/img/f1.jpg') right center / 55% auto no-repeat,        /* FOTO F1 a la derecha */
+    #000;
+}
+
+/* Franja roja diagonal detrás del formulario */
+.fondo-formulario::before {
+  content: '';
+  position: absolute;
+  top: -5%;
+  bottom: -5%;
+  left: 50%;                  /* POSICIÓN (en el centro) */
+  width: 10px;                /* GROSOR */
+  background: var(--rojo);    /* COLOR */
+  transform: skewX(-16deg);   /* INCLINACIÓN */
+}
+
+/* Caja del formulario */
+.formulario {
+  position: relative;
+  width: min(100%, 440px);    /* ANCHO MÁXIMO del formulario: 440px */
+  display: flex;
+  flex-direction: column;     /* Campos uno debajo del otro */
+  border-top: 4px solid var(--rojo); /* LÍNEA ROJA arriba */
+}
+
+/* Título del formulario ("Iniciar sesión", "Registro") */
+.formulario h1 {
+  font-size: 36px;            /* TAMAÑO */
+}
+
+/* Etiquetas de los campos */
+.formulario label,
+.etiqueta-grupo {
+  margin: 14px 0 4px;         /* Espacio arriba 14px, abajo 4px */
+  color: var(--texto-suave);  /* COLOR */
+}
+
+/* Campos de texto, correo y contraseña */
+.formulario input[type='text'],
+.formulario input[type='email'],
+.formulario input[type='password'] {
+  width: 100%;
+  padding: 12px;              /* ALTO del campo */
+  background: #000;           /* FONDO */
+  color: #fff;                /* COLOR del texto */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+
+/* Campo cuando estás escribiendo en él */
+.formulario input:focus {
+  outline: none;
+  border-color: var(--rojo-claro);                /* COLOR del borde */
+  box-shadow: 0 0 0 3px rgba(211, 20, 27, 0.35);  /* Aro rojo alrededor: 3px */
+}
+
+/* Angular pone ng-invalid y ng-touched solas: borde rojo si el campo está mal */
+.formulario input.ng-invalid.ng-touched {
+  border-color: var(--rojo-claro);  /* COLOR del borde de error */
+}
+
+/* Campo de contraseña con el botón Mostrar adentro */
+.con-boton {
+  position: relative;
+}
+
+/* Botón "Mostrar" dentro del campo de contraseña */
+.con-boton button {
+  position: absolute;
+  top: 6px;                   /* POSICIÓN dentro del campo */
+  right: 6px;
+  padding: 6px 10px;
+  background: var(--gris-claro);  /* FONDO */
+  color: var(--texto-suave);      /* COLOR del texto */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Opciones MotoGP / F1 como botones */
+.opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 COLUMNAS iguales */
+  gap: 8px;
+}
+
+.opciones label {
+  margin: 0;
+}
+
+/* Oculta el circulito del radio button (se usa el span como botón) */
+.opciones input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Botón visible de cada opción */
+.opciones span {
+  display: block;
+  padding: 10px;              /* TAMAÑO */
+  text-align: center;
+  font-family: var(--fuente-titulos);
+  color: #fff;                /* COLOR del texto */
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Opción seleccionada */
+.opciones input:checked + span {
+  border-color: var(--rojo-claro);        /* COLOR del borde */
+  background: rgba(211, 20, 27, 0.15);    /* FONDO rojo transparente */
+}
+
+/* Casilla de "Acepto términos" / "Recordarme" */
+.casilla {
+  display: flex;
+  gap: 8px;                   /* Espacio entre la casilla y el texto */
+  color: var(--blanco) !important; /* COLOR del texto */
+}
+
+/* Botón de enviar del formulario */
+.formulario > .boton {
+  margin-top: 18px;           /* Espacio arriba del botón */
+}
+
+/* Enlaces del formulario ("¿No tienes cuenta? Regístrate") */
+.formulario a {
+  color: var(--rojo-claro);   /* COLOR */
+}
+
+
+/* =====================================================================
+   #14. PÁGINA 404 (página no encontrada)
+   ===================================================================== */
+
+/* Contenedor centrado en toda la pantalla */
+.pagina-404 {
+  min-height: 100vh;          /* ALTO: toda la pantalla */
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* Centrado horizontal */
+  justify-content: center;    /* Centrado vertical */
+  text-align: center;
+}
+
+/* Número "404" gigante, solo con el borde rojo */
+.numero-404 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: clamp(100px, 22vw, 180px);           /* TAMAÑO: mínimo 100px, máximo 180px */
+  line-height: 1;
+  color: transparent;                             /* Relleno transparente (solo se ve el borde) */
+  -webkit-text-stroke: 2px var(--rojo-claro);     /* BORDE: grosor 2px y color */
+  text-shadow: 0 0 30px rgba(211, 20, 27, 0.4);   /* BRILLO rojo */
+}
+
+
+/* =====================================================================
+   #15. RESPONSIVE: TABLETA Y CELULAR
+   ---------------------------------------------------------------------
+   Las reglas de aquí SOLO se aplican cuando la pantalla es más angosta
+   que el número indicado. Reemplazan a las de arriba.
+   Si algo se ve mal SOLO en el celular, búscalo aquí.
+   ===================================================================== */
+
+/* ---------- Pantallas de 1100px o menos (tableta) ---------- */
+@media (max-width: 1100px) {
+  /* Menú hamburguesa: aparece el botón ☰ */
+  .hamburguesa {
+    display: block;
+  }
+
+  /* El menú se esconde y se vuelve un panel que baja debajo del navbar */
+  .menu {
+    display: none;              /* Oculto hasta que se toca la hamburguesa */
+    position: absolute;
+    top: 100%;                  /* Justo debajo del navbar */
+    left: 0;
+    right: 0;
+    flex-direction: column;     /* Enlaces uno debajo del otro */
+    align-items: stretch;
+    padding: 16px;
+    background: var(--negro);   /* FONDO del menú desplegado */
+    border-bottom: 2px solid var(--rojo); /* LÍNEA ROJA abajo */
+  }
+
+  /* Menú abierto (Angular pone la clase "abierto" al tocar ☰) */
+  .menu.abierto {
+    display: flex;
+  }
+
+  /* En el menú desplegado la línea del enlace va a la izquierda */
+  .menu > a:not(.boton) {
+    border-bottom: none;
+    border-left: 3px solid transparent;
+    padding-left: 10px;
+  }
+
+  /* Enlace activo: línea roja a la izquierda */
+  .menu a.activo {
+    border-left-color: var(--rojo-claro) !important;
+  }
+
+  /* Selector MotoGP | F1 ocupa todo el ancho */
+  .selector {
+    margin-left: 0;
+  }
+
+  .selector a {
+    flex: 1;                    /* Las dos opciones del mismo ancho */
+    text-align: center;
+  }
+
+  .menu .texto-suave {
+    text-align: center;
+  }
+}
+
+/* ---------- Pantallas de 900px o menos (tableta chica / celular) ---------- */
+@media (max-width: 900px) {
+  /* Las dos columnas pasan a una sola */
+  .dos-columnas {
+    grid-template-columns: 1fr;
+  }
+
+  /* Las cifras pasan de 4 columnas a 2 */
+  .cifras {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .caja-ubicacion {
+    position: static;           /* Ya no se queda pegada */
+    order: -1; /* en el celular la ubicación va primero */
+  }
+
+  /* Portada: un lado debajo del otro, sin diagonal */
+  .portada {
+    height: auto;
+  }
+
+  /* Barra de la portada: deja de flotar y tiene fondo negro */
+  .portada-barra {
+    position: static;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: #000;
+  }
+
+  /* Cada lado (MotoGP / F1) ocupa media pantalla de alto */
+  .lado {
+    position: relative;
+    min-height: 50vh;           /* ALTO de cada lado en el celular */
+    padding: 40px 12px;
+  }
+
+  /* Sin recorte diagonal */
+  .lado-moto,
+  .lado-f1 {
+    clip-path: none;
+  }
+
+  /* Línea roja horizontal entre MotoGP y F1 */
+  .lado-f1 {
+    border-top: 6px solid var(--rojo); /* GROSOR y COLOR */
+  }
+
+  /* Sin zoom en el celular */
+  .lado.activo .foto {
+    transform: none;
+  }
+
+  /* En el celular la foto cubre todo su recuadro, sin estirarse de más */
+  .foto {
+    background-size: cover;
+    filter: brightness(0.95);   /* BRILLO de las fotos en el celular */
+  }
+
+  /* Qué parte de la foto se ve (horizontal y vertical) */
+  .lado-moto .foto {
+    background-position: 40% center;
+  }
+
+  .lado-f1 .foto {
+    background-position: 55% center;
+  }
+
+  /* Textos centrados normales (sin posición calculada) */
+  .contenido,
+  .lado-moto .contenido,
+  .lado-f1 .contenido {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    transform: none;
+  }
+
+  .temporada {
+    margin-bottom: 10px;
+  }
+
+  /* En el celular no hay mouse: los íconos se ven siempre */
+  .iconos {
+    opacity: 1;
+    transform: none;
+    gap: 8px;                   /* Espacio entre íconos */
+    margin-top: 24px;
+  }
+
+  .iconos a {
+    font-size: 12px;            /* TAMAÑO del texto de los íconos en el celular */
+  }
+
+  .iconos img {
+    width: 56px;                /* TAMAÑO de los íconos en el celular */
+    padding: 9px;
+  }
+
+  /* Se ocultan las franjas rojas diagonales en el celular */
+  .franja-roja,
+  .encabezado::after,
+  .fondo-formulario::before {
+    display: none;
+  }
+
+  /* Fondo del login/registro en el celular: solo la foto de MotoGP */
+  .fondo-formulario {
+    background:
+      linear-gradient(rgba(7, 7, 8, 0.75), rgba(7, 7, 8, 0.9)),
+      url('/img/motogp.jpg') center / cover;
+  }
+
+  /* Encabezado MotoGP en el celular: la foto cubre todo */
+  .encabezado {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.85)),
+      url('/img/motogp.jpg') 40% center / cover;
+  }
+
+  /* Encabezado F1 en el celular */
+  .encabezado-f1 {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.85)),
+      url('/img/f1.jpg') 55% center / cover;
+  }
+
+  /* Banner de cookies: texto arriba y botones abajo, uno sobre otro */
+  .banner-cookies,
+  .banner-botones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ---------- Pantallas de 500px o menos (celular) ---------- */
+@media (max-width: 500px) {
+  /* Tabla más compacta en el celular */
+  .tabla-posiciones th,
+  .tabla-posiciones td {
+    padding: 8px;               /* Menos espacio interno */
+    font-size: 15px;            /* TAMAÑO de letra de la tabla en el celular */
+  }
+
+  /* La fecha baja debajo del nombre de la carrera */
+  .carrera {
+    display: grid;
+    grid-template-columns: 46px 1fr; /* Columna del número (46px) y el resto */
+  }
+
+  .fecha {
+    grid-column: 2;
+    margin-left: 0;
+    text-align: left;
+  }
+}
