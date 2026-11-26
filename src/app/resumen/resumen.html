@@ -1,0 +1,78 @@
+<!-- Navbar reutilizable. [serie] le pasa el campeonato que se está viendo -->
+<app-navbar [serie]="serie()" />
+
+<!-- Encabezado con la foto del campeonato. [class.encabezado-f1] cambia la foto si es F1 -->
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <p class="rojo">Temporada 2026</p>
+  <h1 class="titulo-brillo">{{ datos().nombre }}</h1>
+  <p>{{ datos().lema }}</p>
+</header>
+
+<main class="contenedor">
+  <!-- CIFRAS: los números salen de los datos ({{ }} muestra el valor) -->
+  <h2>La temporada en cifras</h2>
+  <section class="cifras">
+    <div class="tarjeta">
+      <p class="numero">{{ datos().carreras.length }}</p>
+      <p class="texto-suave">Grandes Premios</p>
+    </div>
+    <div class="tarjeta">
+      <p class="numero">{{ datos().equipos.length }}</p>
+      <p class="texto-suave">Equipos</p>
+    </div>
+    <div class="tarjeta">
+      <p class="numero">{{ totalPilotos() }}</p>
+      <p class="texto-suave">Pilotos titulares</p>
+    </div>
+    <div class="tarjeta">
+      <p class="numero">{{ carrerasCorridas() }}<small>/{{ datos().carreras.length }}</small></p>
+      <p class="texto-suave">Carreras disputadas</p>
+      <!-- [style.width.%] pone el ancho de la barra en porcentaje según avance() -->
+      <div class="barra"><div class="barra-relleno" [style.width.%]="avance()"></div></div>
+    </div>
+  </section>
+
+  <section class="dos-columnas">
+    <!-- PRÓXIMA CARRERA: "as carrera" guarda el resultado de proximaCarrera() para usarlo adentro -->
+    <article class="tarjeta borde-izquierdo">
+      <p class="rojo">Próxima carrera</p>
+      @if (proximaCarrera(); as carrera) {
+        <h3>{{ carrera.nombre }}</h3>
+        <p class="texto-suave">Ronda {{ carrera.ronda }} · {{ carrera.fecha }}<br />{{ carrera.circuito }}, {{ carrera.pais }}</p>
+        <a class="boton boton-rojo" routerLink="/carreras" queryParamsHandling="preserve">Ver calendario completo</a>
+      } @else {
+        <h3>Temporada terminada</h3>
+      }
+    </article>
+
+    <!-- CAMPEÓN ANTERIOR -->
+    <article class="tarjeta">
+      <p class="rojo">Defiende el título</p>
+      <h3>{{ datos().campeon }}, campeón 2025</h3>
+      <p class="texto-suave">¿Quién va ganando este año? Mira la tabla de posiciones.</p>
+      <a class="boton" routerLink="/campeonato" queryParamsHandling="preserve">Ver campeonato</a>
+    </article>
+  </section>
+
+  <!-- NOVEDADES: @for crea una tarjeta por cada novedad de la lista -->
+  <h2>Lo nuevo en 2026</h2>
+  <section class="cuadricula">
+    @for (novedad of datos().novedades; track novedad) {
+      <p class="tarjeta">{{ novedad }}</p>
+    }
+  </section>
+
+  <!-- ACCESOS RÁPIDOS a las otras secciones -->
+  <h2>Explora</h2>
+  <nav class="accesos" aria-label="Accesos rápidos">
+    @for (opcion of accesos; track opcion.ruta) {
+      <a class="tarjeta" [routerLink]="opcion.ruta" queryParamsHandling="preserve">
+        <img [src]="opcion.icono" alt="" />
+        {{ opcion.texto }}
+      </a>
+    }
+  </nav>
+</main>
+
+<!-- Footer reutilizable -->
+<app-footer />
