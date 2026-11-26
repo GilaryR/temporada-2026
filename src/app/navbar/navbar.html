@@ -1,0 +1,50 @@
+<!-- header y nav son etiquetas semánticas de HTML5 -->
+<header class="navbar">
+  <!-- routerLink="/" es como href="/": va a la portada sin recargar la página -->
+  <a class="marca" routerLink="/" aria-label="Ir a la portada">
+    <span class="rojo">Temporada 2026</span>
+    <!-- {{ }} muestra un valor. Si la serie es 'f1' escribe "Formula 1", si no "Moto GP" -->
+    <span class="titulo-brillo">{{ serie() === 'f1' ? 'Formula 1' : 'Moto GP' }}</span>
+  </a>
+
+  <!-- Botón hamburguesa (solo se ve en el celular, ver styles.css sección 15) -->
+  <button class="hamburguesa" (click)="cambiarMenu()" aria-label="Abrir o cerrar el menú">
+    {{ menuAbierto() ? '✕' : '☰' }}
+  </button>
+
+  <!-- [class.abierto] agrega la clase "abierto" solo cuando menuAbierto() es true -->
+  <nav class="menu" [class.abierto]="menuAbierto()" aria-label="Menú principal">
+    <!-- @for repite el enlace por cada opción del menú (como un for de JavaScript) -->
+    <!-- routerLinkActive="activo" pone la clase "activo" en el enlace de la página actual (se resalta en rojo) -->
+    <!-- queryParamsHandling="preserve" conserva el ?serie= al cambiar de página -->
+    @for (opcion of menu; track opcion.ruta) {
+      <a [routerLink]="opcion.ruta" routerLinkActive="activo" queryParamsHandling="preserve">
+        <img [src]="opcion.icono" alt="" />
+        {{ opcion.texto }}
+      </a>
+    }
+
+    <!-- Favoritos: muestra un candado si no hay sesión iniciada -->
+    <a routerLink="/favoritos" routerLinkActive="activo" queryParamsHandling="preserve">
+      <img src="iconos/favoritos.png" alt="" /> Favoritos
+      @if (!auth.usuario()) {
+        <span title="Requiere iniciar sesión">🔒</span>
+      }
+    </a>
+
+    <!-- Selector MotoGP / F1: abre la misma página pero con otro ?serie= en la dirección -->
+    <div class="selector">
+      <a [routerLink]="[]" [queryParams]="{ serie: 'motogp' }" [class.activa]="serie() !== 'f1'" (click)="cookies.guardarSerie('motogp')">MotoGP</a>
+      <a [routerLink]="[]" [queryParams]="{ serie: 'f1' }" [class.activa]="serie() === 'f1'" (click)="cookies.guardarSerie('f1')">F1</a>
+    </div>
+
+    <!-- Si hay sesión: saludo y botón de salir. Si no (@else): botones de ingresar y registrarse -->
+    @if (auth.usuario(); as usuario) {
+      <span class="texto-suave">Hola, {{ usuario.nombre }}</span>
+      <button class="boton" (click)="salir()">Cerrar sesión</button>
+    } @else {
+      <a class="boton" routerLink="/login">Ingresar</a>
+      <a class="boton boton-rojo" routerLink="/registro">Registrarse</a>
+    }
+  </nav>
+</header>
