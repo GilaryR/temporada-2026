@@ -1,0 +1,36 @@
+<!-- footer es una etiqueta semántica de HTML5 -->
+<footer class="footer">
+  <div class="footer-columnas">
+    <!-- Columna 1: nombre de la página -->
+    <div>
+      <p class="rojo footer-titulo">Temporada 2026</p>
+      <p class="texto-suave">Calendarios, equipos y reglamento de MotoGP y Fórmula 1 en un solo lugar.</p>
+    </div>
+
+    <!-- Columna 2: enlaces a las secciones (se crean con @for desde la lista MENU) -->
+    <nav aria-label="Secciones">
+      <h2>Secciones</h2>
+      @for (opcion of menu; track opcion.ruta) {
+        <a [routerLink]="opcion.ruta">{{ opcion.texto }}</a>
+      }
+    </nav>
+
+    <!-- Columna 3: estado de las cookies y botón para borrarlas -->
+    <div>
+      <h2>Cookies</h2>
+      <p class="texto-suave">
+        Estado:
+        @if (cookies.mostrarBanner()) {
+          sin elegir
+        } @else if (cookies.aceptadas()) {
+          aceptadas
+        } @else {
+          solo las necesarias
+        }
+      </p>
+      <!-- Borra las cookies y vuelve a mostrar el banner -->
+      <button class="boton" (click)="cookies.borrarTodo()">Borrar y elegir de nuevo</button>
+    </div>
+  </div>
+  <p class="footer-legal texto-suave">Proyecto académico Frontend · Sitio no oficial.</p>
+</footer>
