@@ -1,2 +1,26 @@
+<<<<<<< HEAD
+<!-- router-outlet: aquí Angular pone la página de la ruta actual (Inicio, Carreras, Login...) -->
+<router-outlet />
+
+<!-- BANNER DE COOKIES -->
+<!-- @if muestra el bloque solo si la condición es verdadera (si todavía no ha respondido) -->
+@if (cookies.mostrarBanner()) {
+  <section class="banner-cookies" aria-label="Aviso de cookies">
+    <div>
+      <h2 class="rojo">Usamos cookies</h2>
+      <p class="texto-suave">
+        Una cookie mantiene tu sesión abierta. Si aceptas, también recordamos
+        tu campeonato favorito y tu correo para el login. Puedes cambiarlo desde el pie de página.
+      </p>
+    </div>
+    <div class="banner-botones">
+      <!-- (click) es como addEventListener('click'): llama a la función del servicio -->
+      <button class="boton" (click)="cookies.rechazar()">Solo las necesarias</button>
+      <button class="boton boton-rojo" (click)="cookies.aceptar()">Aceptar cookies</button>
+    </div>
+  </section>
+}
+=======
 <!-- router-outlet: aquí Angular pone la página de la ruta actual -->
 <router-outlet />
+>>>>>>> develop
