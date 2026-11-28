@@ -1,0 +1,52 @@
+<app-navbar />
+
+<main class="fondo-formulario">
+  <form class="tarjeta formulario" [formGroup]="formulario" (ngSubmit)="ingresar()">
+    <p class="rojo">Temporada 2026</p>
+    <h1 class="titulo-brillo">Iniciar sesión</h1>
+    <p class="texto-suave">Entra para ordenar y guardar tus pilotos favoritos.</p>
+
+    <!-- Avisos según lo que venga en la dirección -->
+    @if (aviso() === 'registrado') {
+      <p class="alerta exito-caja">Cuenta creada. Ya puedes iniciar sesión.</p>
+    }
+    @if (aviso() === 'protegida' && !error()) {
+      <p class="alerta">Esa sección es solo para usuarios registrados.</p>
+    }
+
+    <!-- Error si el correo o la contraseña no coinciden -->
+    @if (error()) {
+      <p class="alerta">{{ error() }}</p>
+    }
+
+    <label for="correo">Correo electrónico</label>
+    <input id="correo" type="email" formControlName="correo" />
+    @if (formulario.get('correo')?.touched && formulario.get('correo')?.invalid) {
+      <p class="error">Escribe un correo válido.</p>
+    }
+
+    <label for="clave">Contraseña</label>
+    <div class="con-boton">
+      <input id="clave" [type]="verClave() ? 'text' : 'password'" formControlName="clave" />
+      <button type="button" (click)="verClave.set(!verClave())">
+        {{ verClave() ? 'Ocultar' : 'Mostrar' }}
+      </button>
+    </div>
+    @if (formulario.get('clave')?.touched && formulario.get('clave')?.invalid) {
+      <p class="error">La contraseña es obligatoria.</p>
+    }
+
+    <label class="casilla">
+      <input type="checkbox" formControlName="recordar" />
+      Recordarme en este equipo
+    </label>
+
+    <button class="boton boton-rojo" type="submit" [disabled]="formulario.invalid">
+      Ingresar
+    </button>
+
+    <p class="texto-suave centrado">¿No tienes cuenta? <a routerLink="/registro">Regístrate</a></p>
+  </form>
+</main>
+
+<app-footer />
