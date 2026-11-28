@@ -1,0 +1,45 @@
+<!-- Barra de navegación. Le pasamos la serie (motogp o f1) -->
+<app-navbar [serie]="serie()" />
+
+<!-- Encabezado. Si la serie es f1, se agrega la clase con la foto de F1 -->
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <!-- Escribe "Formula 1" o "Moto GP" según la serie -->
+  <p class="rojo">Temporada 2026 · {{ serie() === 'f1' ? 'Formula 1' : 'Moto GP' }}</p>
+  <h1 class="titulo-brillo">Mis pilotos favoritos</h1>
+  <p>Arrastra a los pilotos para ordenarlos: arriba tu favorito. Tus 3 primeros llevan estrella.</p>
+</header>
+
+<main class="contenedor">
+  <!-- DRAG AND DROP:
+       cdkDropList = la lista donde se sueltan los pilotos.
+       cdkDrag = cada piloto se puede arrastrar.
+       Al soltar un piloto se llama a soltar() en favoritos.ts -->
+  <ol class="favoritos" cdkDropList (cdkDropListDropped)="soltar($event)">
+    <!-- @for repite el <li> por cada piloto. i es su posición (0, 1, 2...) -->
+    @for (piloto of pilotos(); track piloto; let i = $index) {
+      <!-- Los 3 primeros llevan la clase top3 (borde rojo) -->
+      <li class="favorito" [class.top3]="i < 3" cdkDrag>
+        <!-- Puesto: se suma 1 porque i empieza en 0 -->
+        <span class="rojo">{{ i + 1 }}</span>
+        <span class="nombre-favorito">{{ piloto }}</span>
+
+        <!-- Estrella solo para los 3 primeros -->
+        @if (i < 3) {
+          <img class="estrella" src="iconos/favoritos.png" alt="Favorito" />
+        }
+
+        <!-- Ícono para mostrar que se puede arrastrar -->
+        <span class="texto-suave" aria-hidden="true">☰</span>
+      </li>
+    }
+  </ol>
+
+  <!-- Guarda el orden de los pilotos -->
+  <button class="boton boton-rojo" (click)="guardar()">Guardar mis favoritos</button>
+
+  <!-- Mensaje de que se guardó -->
+  <p class="exito">{{ mensaje() }}</p>
+</main>
+
+<!-- Pie de página -->
+<app-footer />
