@@ -1,0 +1,87 @@
+<app-navbar [serie]="serie()" />
+
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <p class="rojo">Temporada 2026 {{ datos().nombre }}</p>
+  <h1 class="titulo-brillo">Calendario</h1>
+  <p>{{ datos().carreras.length }} Grandes Premios. Encuentra el circuito que te queda más cerca.</p>
+</header>
+
+<main class="contenedor dos-columnas">
+  <!-- ===== CALENDARIO ===== -->
+  <section>
+    <h2>Fechas 2026</h2>
+
+    <!-- Botones de filtro: (click) cambia el filtro y [class.activa] pinta de rojo el elegido -->
+    <div class="filtros">
+      <button class="pildora" [class.activa]="filtro() === 'todas'" (click)="filtro.set('todas')">
+        Todas
+      </button>
+      <button class="pildora" [class.activa]="filtro() === 'proximas'" (click)="filtro.set('proximas')">
+        Próximas
+      </button>
+      <button class="pildora" [class.activa]="filtro() === 'corridas'" (click)="filtro.set('corridas')">
+        Finalizadas
+      </button>
+    </div>
+
+    <!-- Una tarjeta por cada carrera. @empty se muestra si la lista está vacía -->
+    @for (carrera of carrerasFiltradas(); track carrera.ronda) {
+      <article class="carrera" [class.corrida]="yaSeCorrio(carrera)">
+        <span class="ronda">{{ carrera.ronda }}</span>
+        <div>
+          <h3>{{ carrera.nombre }}</h3>
+          <p class="texto-suave">{{ carrera.circuito }} · {{ carrera.pais }}</p>
+        </div>
+        <div class="fecha">
+          <p>{{ carrera.fecha }}</p>
+          <span class="etiqueta">{{ yaSeCorrio(carrera) ? 'Finalizada' : 'Próxima' }}</span>
+        </div>
+      </article>
+    } @empty {
+      <p class="texto-suave">No hay carreras con este filtro.</p>
+    }
+  </section>
+
+  <!-- ===== GEOLOCALIZACIÓN ===== -->
+  <section class="tarjeta caja-ubicacion">
+    <h2>¿Qué circuito te queda más cerca?</h2>
+    <p class="texto-suave">Usamos tu ubicación solo para calcular la distancia a cada circuito.</p>
+
+    <!-- [disabled] desactiva el botón mientras busca -->
+    <button class="boton boton-rojo ancho-completo" (click)="buscarUbicacion()" [disabled]="buscando()">
+      {{ buscando() ? 'Buscando...' : 'Usar mi ubicación' }}
+    </button>
+
+    <!-- Si hubo error (por ejemplo, permiso denegado): mensaje y lista para elegir la ciudad -->
+    @if (error()) {
+      <div class="alerta">
+        <p>{{ error() }}</p>
+        <label for="ciudad">O elige tu ciudad: </label>
+        <select id="ciudad" (change)="elegirCiudad($event)">
+          <option value="">Selecciona...</option>
+          @for (ciudad of ciudades; track ciudad.nombre) {
+            <option>{{ ciudad.nombre }}</option>
+          }
+        </select>
+      </div>
+    }
+
+    <!-- Mapa con la ubicación (solo aparece cuando ya hay una ubicación) -->
+    @if (mapa()) {
+      <iframe class="mapa" [src]="mapa()" title="Mapa con tu ubicación"></iframe>
+    }
+
+    <!-- Los 3 circuitos más cercanos. $first es true en el primero (se resalta en rojo) -->
+    @for (item of cercanas(); track item.carrera.ronda; let primero = $first) {
+      <div class="cercana" [class.primera]="primero">
+        <span>
+          <strong>{{ item.carrera.nombre }}</strong><br />
+          <small class="texto-suave">{{ item.carrera.circuito }}</small>
+        </span>
+        <span class="rojo">{{ item.km }} km</span>
+      </div>
+    }
+  </section>
+</main>
+
+<app-footer />
