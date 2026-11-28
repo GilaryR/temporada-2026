@@ -1,0 +1,37 @@
+<app-navbar [serie]="serie()" />
+
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <p class="rojo">Temporada 2026 {{ datos().nombre }}</p>
+  <h1 class="titulo-brillo">Glosario</h1>
+  <p>Los términos que más se escuchan en una transmisión, explicados en pocas palabras.</p>
+</header>
+
+<main class="contenedor">
+  <!-- Buscador: (input) llama a buscar() cada vez que el usuario escribe -->
+  <div class="buscador">
+    <label for="buscar">Buscar término</label>
+    <input
+      id="buscar"
+      type="search"
+      placeholder="Ej.: sprint, safety car..."
+      (input)="buscar($event)"
+    />
+  </div>
+
+  <!-- Contador: cuántos términos se están mostrando -->
+  <p class="texto-suave">{{ terminosFiltrados().length }} de {{ datos().glosario.length }} términos</p>
+
+  <!-- Una tarjeta por término. @empty aparece si no hay resultados -->
+  <section class="cuadricula">
+    @for (item of terminosFiltrados(); track item.termino) {
+      <article class="tarjeta termino">
+        <h3>{{ item.termino }}</h3>
+        <p>{{ item.definicion }}</p>
+      </article>
+    } @empty {
+      <p class="texto-suave">No encontramos ese término. Prueba con otra palabra.</p>
+    }
+  </section>
+</main>
+
+<app-footer />
