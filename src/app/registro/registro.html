@@ -1,0 +1,66 @@
+<app-navbar />
+
+<main class="fondo-formulario">
+  <!-- [formGroup] conecta el <form> con el FormGroup del .ts. (ngSubmit) se ejecuta al enviarlo -->
+  <form class="tarjeta formulario" [formGroup]="formulario" (ngSubmit)="registrar()">
+    <p class="rojo">Temporada 2026</p>
+    <h1 class="titulo-brillo">Crea tu cuenta</h1>
+    <p class="texto-suave">Guarda tus pilotos favoritos y tu campeonato preferido.</p>
+
+    <!-- Error si el correo ya está registrado -->
+    @if (error()) {
+      <p class="alerta">{{ error() }}</p>
+    }
+
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" formControlName="nombre" />
+    @if (formulario.get('nombre')?.touched && formulario.get('nombre')?.invalid) {
+      <p class="error">El nombre es obligatorio y debe tener entre 3 y 30 letras.</p>
+    }
+
+    <label for="correo">Correo electrónico</label>
+    <input id="correo" type="email" formControlName="correo" />
+    @if (formulario.get('correo')?.touched && formulario.get('correo')?.invalid) {
+      <p class="error">Escribe un correo válido, por ejemplo nombre@correo.com.</p>
+    }
+
+    <label for="clave">Contraseña</label>
+    <div class="con-boton">
+      <input id="clave" [type]="verClave() ? 'text' : 'password'" formControlName="clave" />
+      <button type="button" (click)="verClave.set(!verClave())">
+        {{ verClave() ? 'Ocultar' : 'Mostrar' }}
+      </button>
+    </div>
+    <small class="texto-suave">Entre 8 y 20 caracteres.</small>
+    @if (formulario.get('clave')?.touched && formulario.get('clave')?.invalid) {
+      <p class="error">La contraseña debe tener entre 8 y 20 caracteres.</p>
+    }
+
+    <label for="confirmar">Confirmar contraseña</label>
+    <input id="confirmar" [type]="verClave() ? 'text' : 'password'" formControlName="confirmar" />
+    @if (formulario.get('confirmar')?.touched && formulario.hasError('distintas')) {
+      <p class="error">Las contraseñas no coinciden.</p>
+    }
+
+    <!-- Botones de opción (radio) para elegir el campeonato favorito -->
+    <p class="etiqueta-grupo">Tu campeonato favorito</p>
+    <div class="opciones">
+      <label><input type="radio" formControlName="serie" value="motogp" /> <span>Moto GP</span></label>
+      <label><input type="radio" formControlName="serie" value="f1" /> <span>Formula 1</span></label>
+    </div>
+
+    <label class="casilla">
+      <input type="checkbox" formControlName="terminos" />
+      Acepto que mis datos se guarden en este navegador.
+    </label>
+
+    <!-- [disabled]: el botón no se puede usar mientras el formulario sea inválido -->
+    <button class="boton boton-rojo" type="submit" [disabled]="formulario.invalid">
+      Registrarme
+    </button>
+
+    <p class="texto-suave centrado">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+  </form>
+</main>
+
+<app-footer />
