@@ -1,0 +1,39 @@
+<app-navbar [serie]="serie()" />
+
+<header class="encabezado" [class.encabezado-f1]="serie() === 'f1'">
+  <p class="rojo">Temporada 2026 {{ datos().nombre }}</p>
+  <h1 class="titulo-brillo">Equipos</h1>
+  <p>{{ datos().equipos.length }} equipos y {{ datos().equipos.length * 2 }} pilotos titulares en la parrilla.</p>
+</header>
+
+<main class="contenedor">
+  <h2>Parrilla 2026</h2>
+
+  <!-- Botones de filtro: uno fijo "Todas las marcas" y uno por cada marca (con @for) -->
+  <div class="filtros">
+    <button class="pildora" [class.activa]="marcaElegida() === 'todas'" (click)="marcaElegida.set('todas')">
+      Todas las marcas
+    </button>
+    @for (marca of marcas(); track marca) {
+      <button class="pildora" [class.activa]="marcaElegida() === marca" (click)="marcaElegida.set(marca)">
+        {{ marca }}
+      </button>
+    }
+  </div>
+
+  <!-- Una tarjeta por equipo. Adentro, otro @for muestra sus dos pilotos -->
+  <section class="cuadricula">
+    @for (equipo of equiposFiltrados(); track equipo.nombre) {
+      <!-- [style.border-left-color] pinta el borde con el color del equipo -->
+      <article class="tarjeta equipo" [style.border-left-color]="equipo.color">
+        <h3>{{ equipo.nombre }}</h3>
+        <p class="texto-suave">Motor {{ equipo.marca }}</p>
+        @for (piloto of equipo.pilotos; track piloto) {
+          <p class="piloto">{{ piloto }}</p>
+        }
+      </article>
+    }
+  </section>
+</main>
+
+<app-footer />
